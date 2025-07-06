@@ -3,16 +3,18 @@ import styles from './Layout.module.css'
 
 function Layout() {
 
-    return(
+    return (
         <div>
-           <header className={styles.header}>
+            <header className={styles.header}>
                 <nav className={styles.nav}>
-                    <NavLink className={({isActive})=>  isActive ? styles['active-nav-link'] : styles['default-nav-link']} to='/'>Translate</NavLink>
+                    <NavLink className={({ isActive }) => isActive ? styles['active-nav-link'] : styles['default-nav-link']} to='/'>Translate</NavLink>
                     <span className={styles.separator}> & </span>
-                    <NavLink className={({isActive})=>  isActive ? styles['active-nav-link'] : styles['default-nav-link']} to='/dictionary'>Teach</NavLink>
+                    <NavLink
+                        to="/dictionary"
+                        className={({ isActive }) => `${styles['default-nav-link']} ${isActive ? styles['active-nav-link'] : ''} ${styles.teachDop}`}>Teach</NavLink>
                 </nav>
-           </header>
-           <Outlet></Outlet>
+            </header>
+            <Outlet></Outlet>
         </div>
     )
 }

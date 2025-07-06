@@ -1,25 +1,6 @@
-.active-nav-link {
-  font-size: 1.5rem; 
-  color: white;
-  background: rgba(255, 255, 255, 0.2);
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  width: 120px;
-}
-
-.default-nav-link {
-  font-size: 1.5rem; 
-  color: white;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  transition: background 0.2s ease;
-  width: 120px;
-}
-
-.default-nav-link:hover {
-  background: rgba(255, 255, 255, 0.1);
+.header {
+  background: #1e40af; /* Глубокий синий */
+  padding: 1rem;
 }
 
 nav {
@@ -29,12 +10,36 @@ nav {
   align-items: center;
 }
 
-.header {
-  background: #1e40af; /* Глубокий синий */
-  padding: 1rem;
+.default-nav-link {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.7); /* Приглушённый белый */
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  width: 120px; /* Фиксированная ширина */
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.default-nav-link:hover {
+  color: white; /* Яркий белый при наведении */
+}
+
+.active-nav-link {
+  font-size: 1.5rem;
+  color: #fbbf24; /* Тёплый жёлтый (как в Tailwind's amber-400) */
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  width: 120px;
+  text-align: center;
+  font-weight: 500; /* Лёгкое утолщение */
 }
 
 .separator {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.3);
   font-size: 1.25rem;
+}
+
+.teachDop {
+    position: relative;
+    right: 20px;
 }
