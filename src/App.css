@@ -1,0 +1,6 @@
+body {
+    text-align: center;
+    margin: 0;
+    background: linear-gradient(45deg, #1e40af 0%, #7c3aed 50%, #38bdf8 100%);
+    background-attachment: fixed;
+}

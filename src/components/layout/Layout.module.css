@@ -1,0 +1,40 @@
+.active-nav-link {
+  font-size: 1.5rem; 
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  width: 120px;
+}
+
+.default-nav-link {
+  font-size: 1.5rem; 
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: background 0.2s ease;
+  width: 120px;
+}
+
+.default-nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+nav {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  background: #1e40af; /* Глубокий синий */
+  padding: 1rem;
+}
+
+.separator {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.25rem;
+}
