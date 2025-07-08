@@ -14,7 +14,10 @@ function Layout() {
                         className={({ isActive }) => `${styles['default-nav-link']} ${isActive ? styles['active-nav-link'] : ''} ${styles.teachDop}`}>Teach</NavLink>
                 </nav>
             </header>
-            <Outlet></Outlet>
+            <div className={styles['outlet-container']}><Outlet></Outlet></div>
+            <footer className={styles.footer}>
+                <p className={styles.author}>Ivan Vasilev</p>
+            </footer>
         </div>
     )
 }

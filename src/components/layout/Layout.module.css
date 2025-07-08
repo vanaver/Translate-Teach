@@ -26,7 +26,7 @@ nav {
 
 .active-nav-link {
   font-size: 1.5rem;
-  color: #fbbf24; /* Тёплый жёлтый (как в Tailwind's amber-400) */
+  color: #fbbf24 !important; /* Тёплый жёлтый (как в Tailwind's amber-400) */
   text-decoration: none;
   padding: 0.5rem 1rem;
   width: 120px;
@@ -42,4 +42,26 @@ nav {
 .teachDop {
     position: relative;
     right: 20px;
+}
+
+.footer {
+  background: #1e40af;
+  padding: 13px 0;
+  display: inline-flex;
+  width: 100%;
+  justify-content: end;
+  margin: 0;
+  
+}
+
+.outlet-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 15px;
 }
