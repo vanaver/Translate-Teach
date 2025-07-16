@@ -1,0 +1,16 @@
+.translator {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.translatorPart {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    align-items: center;
+}
+
+.language {
+    width: 100px;
+}
