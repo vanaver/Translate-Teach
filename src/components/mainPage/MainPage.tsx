@@ -57,7 +57,7 @@ function MainPage(){
                         <option key={lang.code} value={lang.code}>{lang.name}</option>
                     ))}
                 </select>
-                <textarea name="area1" id="area1" placeholder='Введите слово для перевода'></textarea>
+                <textarea    className={`${styles.areas} ${styles.inputArea}`} name="area1" id="area1" placeholder='Введите слово для перевода'></textarea>
             </div>
             {/* секция вторая часть переводчика */}
             <div className={styles.translatorPart}>
@@ -66,7 +66,7 @@ function MainPage(){
                         <option key={lang.code} value={lang.code}>{lang.name}</option>
                     ))}
                 </select>
-                <textarea name="area1" id="area1" placeholder='перевод'></textarea>
+                <textarea className={`${styles.areas} ${styles.outputArea}`} readOnly disabled={false} name="area2" id="area2" placeholder='перевод'></textarea>
             </div>
         </main>
     )

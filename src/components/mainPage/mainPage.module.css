@@ -1,7 +1,7 @@
 .translator {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 100px;
 }
 
 .translatorPart {
@@ -12,5 +12,72 @@
 }
 
 .language {
-    width: 100px;
+  background-color: rgba(255, 255, 255, 0.1); 
+  backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255, 255, 255, 0.3); 
+  border-radius: 8px; 
+  padding: 12px 16px; 
+  color: white; 
+  font-size: 16px; 
+  cursor: pointer;
+  transition: all 0.3s ease; 
+  appearance: none; 
+  outline: none; 
+  width: 100%;
+  max-width: 250px; 
+
+    /* для стрелки стили */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+}
+
+.language:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.language:focus {
+  border-color: #3b82f6; /* Синий цвет для акцента */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.language option {
+  background-color: #1e3a8a; /* Темно-синий фон */
+  color: white;
+  padding: 8px;
+}
+
+.areas {
+  width: 100%;
+  min-height: 150px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  resize: vertical; /* Разрешаем изменять высоту */
+  transition: all 0.3s ease;
+  outline: none;
+  margin: 8px 0;
+}
+
+/* Стиль для textarea ввода (первая) */
+.inputArea {
+  border: 2px solid #3b82f6; /* Синяя рамка */
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #1f2937;
+}
+
+.inputArea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Стиль для textarea вывода (вторая) */
+.outputArea {
+  border: 1px solid #d1d5db; /* Серая рамка */
+  background-color: rgba(249, 250, 251, 0.9);
+  color: #374151;
+  cursor: default; /* Курсор по умолчанию */
+  user-select: text; /* Разрешаем выделение текста */
 }
