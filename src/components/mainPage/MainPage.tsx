@@ -1,5 +1,5 @@
 // MainPage.tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './mainPage.module.css'
 
 
@@ -21,6 +21,7 @@ function MainPage(){
         from: "ru",
         to: "en",
     })
+    const latestRequestId = useRef(0);
     useEffect(() => {
         const fetchLanguages = async () => {
             try {
@@ -67,15 +68,18 @@ function MainPage(){
     setOutputText("");
     return;
   }
+  latestRequestId.current+=1;
+  const currentId = latestRequestId.current;
 
   const delay = setTimeout(async () => {
     setIsLoading(true)
     const result = await fetchTranslate(inputText);
+      if (currentId === latestRequestId.current) {
     if (result && result.translation) {
       setOutputText(result.translation);
     } else {
       setOutputText("Ошибка перевода, скорее всего слишком много обращений к апи за определенный промежуток времени, подождите 15сек+-");
-    }
+    }}
     setIsLoading(false)
   }, 500); // 1 секунда задержки
 
