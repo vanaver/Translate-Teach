@@ -1,3 +1,4 @@
+// MainPage.tsx
 import { useState, useEffect } from 'react';
 import styles from './mainPage.module.css'
 
@@ -11,6 +12,10 @@ function MainPage(){
         from: string,
         to: string,
     }
+    const [inputText, setInptutText] = useState<string>('')
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [dots, setDots] = useState<string>('');
+    const [outputText, setOutputText] = useState<string>('')
     const [languages, setLanguages] = useState<Language[]>([]);
     const [direction, setDirection] = useState<Direction>({
         from: "ru",
@@ -19,10 +24,10 @@ function MainPage(){
     useEffect(() => {
         const fetchLanguages = async () => {
             try {
-                const response = await fetch('https://libretranslate.com/languages');
+                const response = await fetch('https://lingva.ml/api/v1/languages');
                 if(!response.ok){throw new Error('Ошбка загрузки языков')};
-                const data: Language[] = await response.json();
-                setLanguages(data);
+                const data = await response.json();
+                setLanguages(data.languages);
             } catch (error) {
                 console.log(error)
                 setLanguages([
@@ -36,16 +41,71 @@ function MainPage(){
         fetchLanguages()
     }, []);
 
-    useEffect(() => {
-  console.log('Current direction:', direction);
-}, [direction]);
-
     function handleLanguageChangeFrom (el: any) {
         setDirection(prev => ({...prev, from: el.target.value}));
     };
     function handleLanguageChangeTo (el: any) {
         setDirection(prev => ({...prev, to: el.target.value}))
     };
+
+    async function fetchTranslate (text: string) {
+        try{
+            const response = await fetch(`https://lingva.ml/api/v1/${direction.from}/${direction.to}/${text}`);
+            if(!response.ok) {throw new Error('респонс не окей')}
+            const data = await response.json();
+            console.log(data)
+            return data
+        } catch (error){
+            console.log(error)
+        }
+
+    };
+
+    // КЛЮЧЕВОЕ
+    useEffect(() => {
+  if (inputText.trim() === "") {
+    setOutputText("");
+    return;
+  }
+
+  const delay = setTimeout(async () => {
+    setIsLoading(true)
+    const result = await fetchTranslate(inputText);
+    if (result && result.translation) {
+      setOutputText(result.translation);
+    } else {
+      setOutputText("Ошибка перевода, скорее всего слишком много обращений к апи за определенный промежуток времени, подождите 15сек+-");
+    }
+    setIsLoading(false)
+  }, 500); // 1 секунда задержки
+
+  return () => clearTimeout(delay); // отменить прошлую задержку, если ввод продолжается
+}, [inputText, direction]);
+
+    const handleInputChange = async ({target}: any) => {
+        const newText = target.value;
+        setInptutText(newText)
+    }
+
+    // тут анимация точек 
+useEffect(() => {
+  if (!isLoading) {
+    setDots('');
+    return;
+  }
+
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i === 0) setDots('.');
+    else if (i === 1) setDots('..');
+    else setDots('...');
+
+    i = (i + 1) % 3; // циклим i от 0 до 2
+  }, 240);
+
+  return () => clearInterval(interval); // очищаем интервал при изменении isLoading или размонтировании
+}, [isLoading]);
+
 
     return(
         // ниже див всего переводчика в целом
@@ -57,7 +117,11 @@ function MainPage(){
                         <option key={lang.code} value={lang.code}>{lang.name}</option>
                     ))}
                 </select>
-                <textarea    className={`${styles.areas} ${styles.inputArea}`} name="area1" id="area1" placeholder='Введите слово для перевода'></textarea>
+                <textarea className={`${styles.areas} ${styles.inputArea}`} name="area1" id="area1" placeholder='Введите слово для перевода'
+                value={inputText}
+                onChange={handleInputChange}>
+
+                </textarea>
             </div>
             {/* секция вторая часть переводчика */}
             <div className={styles.translatorPart}>
@@ -66,7 +130,15 @@ function MainPage(){
                         <option key={lang.code} value={lang.code}>{lang.name}</option>
                     ))}
                 </select>
-                <textarea className={`${styles.areas} ${styles.outputArea}`} readOnly disabled={false} name="area2" id="area2" placeholder='перевод'></textarea>
+                <textarea 
+                className={`${styles.areas} ${styles.outputArea}`} 
+                readOnly 
+                disabled={false}
+                name="area2" 
+                id="area2" 
+                placeholder='перевод'
+                value={isLoading? `Переводим${dots}` : outputText}
+                ></textarea>
             </div>
         </main>
     )
