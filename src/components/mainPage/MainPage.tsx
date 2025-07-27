@@ -78,7 +78,7 @@ function MainPage(){
     if (result && result.translation) {
       setOutputText(result.translation);
     } else {
-      setOutputText("Ошибка перевода, скорее всего слишком много обращений к апи за определенный промежуток времени, подождите 15сек+-");
+      setOutputText("Ошибка перевода, скорее всего слишком много обращений к апи за определенный промежуток времени, подождите 15сек+- да и вообще оно бесплатное и работает плохо");
     }}
     setIsLoading(false)
   }, 500); // 1 секунда задержки
@@ -115,17 +115,22 @@ useEffect(() => {
         // ниже див всего переводчика в целом
         <main className={styles.translator}> 
             {/* ниже див одной секции с выбором языка и textarea */}
-            <div className={styles.translatorPart}> 
-                <select className={styles.language} value={direction.from} onChange={(handleLanguageChangeFrom)} >
-                    {languages.map((lang) => (
-                        <option key={lang.code} value={lang.code}>{lang.name}</option>
-                    ))}
-                </select>
-                <textarea className={`${styles.areas} ${styles.inputArea}`} name="area1" id="area1" placeholder='Введите слово для перевода'
-                value={inputText}
-                onChange={handleInputChange}>
-
-                </textarea>
+            <div className={styles.plusButtons}>
+                <div className={styles.translatorPart}> 
+                    <select className={styles.language} value={direction.from} onChange={(handleLanguageChangeFrom)} >
+                        {languages.map((lang) => (
+                            <option key={lang.code} value={lang.code}>{lang.name}</option>
+                        ))}
+                    </select>
+                    <textarea className={`${styles.areas} ${styles.inputArea}`} name="area1" id="area1" placeholder='Введите слово для перевода'
+                    value={inputText}
+                    onChange={handleInputChange}></textarea>
+                </div>
+                            {/* кнопки */}
+                <div className={styles.buttonsDiv}>
+                    <button className={`${styles.buttons} ${styles.delete}`}>стереть</button>
+                    <button className={`${styles.buttons} ${styles.save}`}>сохранить в..</button>
+                </div>
             </div>
             {/* секция вторая часть переводчика */}
             <div className={styles.translatorPart}>

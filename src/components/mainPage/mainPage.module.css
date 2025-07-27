@@ -81,3 +81,49 @@
   cursor: default; /* Курсор по умолчанию */
   user-select: text; /* Разрешаем выделение текста */
 }
+
+.buttonsDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.buttons {
+  padding: 10px 10px;
+  width: 110px;
+  height: 44px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.buttons:hover {
+  transform: translateY(-2px);
+}
+
+.delete {
+  background-color: #ef4444; /* Красный */
+  margin-top: 83px;
+}
+.delete:hover {
+  background-color: #dc2626;
+}
+
+.save {
+  background-color: #22c55e; /* Зелёный */
+}
+.save:hover {
+  background-color: #16a34a;
+}
+
+.plusButtons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 20px;
+}
