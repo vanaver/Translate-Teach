@@ -111,6 +111,14 @@ useEffect(() => {
 }, [isLoading]);
 
 
+    function handleDeleteClick() {
+        setInptutText('')
+    };
+    
+    function handleSaveClick() {
+        
+    }
+
     return(
         // ниже див всего переводчика в целом
         <main className={styles.translator}> 
@@ -128,7 +136,7 @@ useEffect(() => {
                 </div>
                             {/* кнопки */}
                 <div className={styles.buttonsDiv}>
-                    <button className={`${styles.buttons} ${styles.delete}`}>стереть</button>
+                    <button className={`${styles.buttons} ${styles.delete}`} onClick={handleDeleteClick}>стереть</button>
                     <button className={`${styles.buttons} ${styles.save}`}>сохранить в..</button>
                 </div>
             </div>
