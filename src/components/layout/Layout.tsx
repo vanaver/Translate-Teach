@@ -1,3 +1,4 @@
+// Layout.tsx
 import { Outlet, NavLink } from "react-router-dom"
 import styles from './Layout.module.css'
 
@@ -10,7 +11,7 @@ function Layout() {
                     <NavLink className={({ isActive }) => isActive ? styles['active-nav-link'] : styles['default-nav-link']} to='/'>Translate</NavLink>
                     <span className={styles.separator}> & </span>
                     <NavLink
-                        to="/dictionary"
+                        to="/dictionaries"
                         className={({ isActive }) => `${styles['default-nav-link']} ${isActive ? styles['active-nav-link'] : ''} ${styles.teachDop}`}>Teach</NavLink>
                 </nav>
             </header>
