@@ -22,9 +22,6 @@
 .dictionaryName {
   font-size: 2rem;
   margin-bottom: 0.5rem;
-  background: linear-gradient(to right, var(--accent-light), var(--accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 .dictionaryDescription {

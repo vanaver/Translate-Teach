@@ -99,7 +99,7 @@ function MainPage() {
           
           setTranslationHistory(prev => [newHistoryItem, ...prev.slice(0, 49)]);
         } else {
-          setOutputText("Ошибка перевода. Пожалуйста, попробуйте позже.");
+          setOutputText("Ошибка, слишком много запросов в минуту, подождите 15 сек");
         }
         setIsLoading(false);
       }

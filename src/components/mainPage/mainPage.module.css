@@ -220,6 +220,10 @@
   .translator {
     padding: 1rem;
   }
+
+  .language {
+    width: 70%;
+  }
   
   .languageSelector {
     flex-direction: column;

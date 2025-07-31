@@ -32,7 +32,7 @@ function Slovariki() {
   return (
     <div className={styles.dictionariesDiv}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Мои словари</h1>
+        <h1 className={styles.title}>Мои словари:</h1>
         <button className={styles.createButton}>
           <span className="material-icons">add</span>
           Новый словарь

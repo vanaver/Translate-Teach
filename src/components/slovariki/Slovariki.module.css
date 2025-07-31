@@ -14,9 +14,7 @@
 
 .title {
   font-size: 2rem;
-  background: linear-gradient(to right, var(--accent-light), var(--accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin-left: 10px;
 }
 
 .createButton {
