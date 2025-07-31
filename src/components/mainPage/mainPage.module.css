@@ -192,6 +192,12 @@
   padding: 1rem;
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.historyItem:hover {
+  background-color: var(--primary-dark);
 }
 
 .historyText {

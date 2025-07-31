@@ -88,16 +88,16 @@ function MainPage() {
       if (currentId === latestRequestId.current) {
         if (result?.translation) {
           setOutputText(result.translation);
-          
-          // Добавляем в историю
-          const newHistoryItem = {
+               
+           setTranslationHistory(prev => [
+          {
             id: Date.now(),
             input: inputText,
             output: result.translation,
             direction: { ...direction }
-          };
-          
-          setTranslationHistory(prev => [newHistoryItem, ...prev.slice(0, 49)]);
+          },
+          ...prev.filter(item => item.input !== inputText) // Удаляем старые записи с таким же текстом
+        ].slice(0, 15));
         } else {
           setOutputText("Ошибка, слишком много запросов в минуту, подождите 15 сек");
         }
@@ -224,7 +224,9 @@ function MainPage() {
           
           <div className={styles.historyList}>
             {translationHistory.map(item => (
-              <div key={item.id} className={styles.historyItem}>
+              <div key={item.id} className={styles.historyItem} onClick={function(){
+                setInputText(item.input)
+              }}>
                 <div className={styles.historyText}>
                   <div className={styles.historyFix}><strong>{item.input}</strong></div>
                   <div className={styles.historyFix}>{item.output}</div>
