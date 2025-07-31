@@ -10,7 +10,7 @@ function Slovariki() {
     {
       id: 1,
       name: 'Основной словарь',
-      description: 'Основные фразы для начала изучения языка',
+      description: 'Ваш словарь котоырй есть по умолчанию',
       words: [
         { original: 'Привет', translation: 'Hello' },
         { original: 'Спасибо', translation: 'Thank you' },
@@ -25,8 +25,8 @@ function Slovariki() {
 
   const navigate = useNavigate();
 
-  const handleClick = (id: number) => {
-    navigate(`/dictionaries/${id}`);
+  const handleClick = (name: string) => {
+    navigate(`/dictionaries/${name}`);
   };
 
   return (
@@ -45,7 +45,7 @@ function Slovariki() {
             <div 
               key={dict.id} 
               className={styles.dictionaryItem}
-              onClick={() => handleClick(dict.id)}
+              onClick={() => handleClick(dict.name)}
             >
               <h2 className={styles.dictionaryName}>
                 <span className="material-icons">book</span>
