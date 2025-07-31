@@ -1,0 +1,41 @@
+/* index.css */
+:root {
+  --primary-dark: #1a1a2e;
+  --primary: #16213e;
+  --secondary: #0f3460;
+  --accent: #4e54c8;
+  --accent-light: #8f94fb;
+  --text-light: #f0f0f0;
+  --text-gray: #a0aec0;
+  --success: #4ade80;
+  --warning: #facc15;
+  --error: #f87171;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  color: var(--text-light);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.material-icons {
+  vertical-align: middle;
+}

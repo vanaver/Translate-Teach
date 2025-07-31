@@ -1,67 +1,78 @@
+/* Layout.module.css */
 .header {
-  background: #1e40af; /* Глубокий синий */
-  padding: 1rem;
+  background-color: rgba(26, 26, 46, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-nav {
+.nav {
   display: flex;
-  gap: 1rem;
   justify-content: center;
-  align-items: center;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .default-nav-link {
-  font-size: 1.5rem;
-  color: rgba(255, 255, 255, 0.7); /* Приглушённый белый */
+  color: var(--text-gray);
   text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
   padding: 0.5rem 1rem;
-  width: 120px; /* Фиксированная ширина */
-  text-align: center;
-  transition: color 0.3s ease;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
 }
 
 .default-nav-link:hover {
-  color: white; /* Яркий белый при наведении */
+  color: var(--text-light);
+  background: rgba(79, 84, 200, 0.1);
 }
 
 .active-nav-link {
-  font-size: 1.5rem;
-  color: #fbbf24 !important; /* Тёплый жёлтый (как в Tailwind's amber-400) */
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  width: 120px;
-  text-align: center;
-  font-weight: 500; /* Лёгкое утолщение */
+  color: var(--accent-light);
+  background: rgba(79, 84, 200, 0.2);
+  position: relative;
+}
+
+.active-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 3px;
+  background: var(--accent-light);
+  border-radius: 3px;
 }
 
 .separator {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 1.25rem;
-}
-
-.teachDop {
-    position: relative;
-    right: 20px;
-}
-
-.footer {
-  background: #1e40af;
-  padding: 13px 0;
-  display: inline-flex;
-  width: 100%;
-  justify-content: end;
-  margin: 0;
-  
+  color: var(--text-gray);
+  display: flex;
+  align-items: center;
 }
 
 .outlet-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  max-width: 1200px;
+  min-height: calc(100vh - 120px);
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
-.footer p {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0 15px;
+.footer {
+  background: var(--primary-dark);
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.author {
+  color: var(--text-gray);
+  font-size: 0.9rem;
 }

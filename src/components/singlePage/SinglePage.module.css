@@ -1,0 +1,166 @@
+/* SinglePage.module.css */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.titleSection {
+  flex: 1;
+  min-width: 300px;
+}
+
+.dictionaryName {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, var(--accent-light), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dictionaryDescription {
+  color: var(--text-gray);
+  margin-bottom: 1rem;
+}
+
+.metaInfo {
+  display: flex;
+  gap: 1.5rem;
+  color: var(--text-gray);
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.actionButton {
+  background: rgba(15, 52, 96, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-light);
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.actionButton:hover {
+  background: var(--secondary);
+  transform: translateY(-2px);
+}
+
+.editButton:hover {
+  border-color: var(--warning);
+}
+
+.practiceButton:hover {
+  border-color: var(--success);
+}
+
+.searchBox {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.searchInput {
+  width: 100%;
+  background: rgba(15, 52, 96, 0.4);
+  color: var(--text-light);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem 1rem 1rem 3rem;
+  font-size: 1rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-gray);
+}
+
+.wordsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wordsTitle {
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wordsCount {
+  color: var(--text-gray);
+  font-size: 0.9rem;
+}
+
+.wordsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.wordCard {
+  background: rgba(15, 52, 96, 0.3);
+  border-radius: 12px;
+  padding: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.wordCard:hover {
+  background: rgba(15, 52, 96, 0.5);
+  transform: translateY(-3px);
+}
+
+.original {
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+
+.translation {
+  color: var(--text-gray);
+  font-size: 0.95rem;
+}
+
+.emptyWords {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-gray);
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+  .actions {
+    width: 100%;
+  }
+  
+  .actionButton {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .wordsList {
+    grid-template-columns: 1fr;
+  }
+}

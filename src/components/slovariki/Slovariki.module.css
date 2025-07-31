@@ -1,0 +1,132 @@
+/* Slovariki.module.css */
+.dictionariesDiv {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  background: linear-gradient(to right, var(--accent-light), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.createButton {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.createButton:hover {
+  background: var(--accent-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(143, 148, 251, 0.3);
+}
+
+.dictionariesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.dictionaryItem {
+  background: rgba(15, 52, 96, 0.4);
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dictionaryItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-color: var(--accent-light);
+}
+
+.dictionaryItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: var(--accent);
+}
+
+.dictionaryName {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.dictionaryDescription {
+  color: var(--text-gray);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.dictionaryMeta {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-gray);
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.emptyMessage {
+  text-align: center;
+  color: var(--text-gray);
+  padding: 3rem;
+  grid-column: 1 / -1;
+}
+
+.emptyMessage h3 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.emptyButton {
+  background: var(--secondary);
+  color: var(--text-light);
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .dictionariesGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,129 +1,240 @@
+/* mainPage.module.css */
 .translator {
-    display: flex;
-    justify-content: center;
-    gap: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: rgba(15, 52, 96, 0.4);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+}
+
+.translatorHeader {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.translatorHeader h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, var(--accent-light), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.translatorHeader p {
+  color: var(--text-gray);
 }
 
 .translatorPart {
-    display: flex;
-    flex-direction: column;
-    margin-top: 30px;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.languageSelector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.swapButton {
+  background: var(--secondary);
+  border: none;
+  color: var(--text-light);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.swapButton:hover {
+  background: var(--accent);
+  transform: rotate(180deg);
 }
 
 .language {
-  background-color: rgba(255, 255, 255, 0.1); 
-  backdrop-filter: blur(10px); 
-  border: 1px solid rgba(255, 255, 255, 0.3); 
-  border-radius: 8px; 
-  padding: 12px 16px; 
-  color: white; 
-  font-size: 16px; 
-  cursor: pointer;
-  transition: all 0.3s ease; 
-  appearance: none; 
-  outline: none; 
-  width: 100%;
-  max-width: 250px; 
-
-    /* для стрелки стили */
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 20px;
-}
-
-.language:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(26, 26, 46, 0.7);
+  color: var(--text-light);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-size: 1rem;
+  flex: 1;
+  transition: all 0.3s ease;
 }
 
 .language:focus {
-  border-color: #3b82f6; /* Синий цвет для акцента */
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-}
-
-.language option {
-  background-color: #1e3a8a; /* Темно-синий фон */
-  color: white;
-  padding: 8px;
+  outline: none;
+  border-color: var(--accent-light);
+  box-shadow: 0 0 0 3px rgba(143, 148, 251, 0.3);
 }
 
 .areas {
-  width: 100%;
-  min-height: 150px;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 16px;
-  resize: vertical; /* Разрешаем изменять высоту */
+  background: rgba(26, 26, 46, 0.5);
+  color: var(--text-light);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.2rem;
+  min-height: 200px;
+  font-size: 1.1rem;
+  resize: vertical;
   transition: all 0.3s ease;
+}
+
+.areas:focus {
   outline: none;
-  margin: 8px 0;
+  border-color: var(--accent-light);
+  box-shadow: 0 0 0 3px rgba(143, 148, 251, 0.3);
 }
 
-/* Стиль для textarea ввода (первая) */
 .inputArea {
-  border: 2px solid #3b82f6; /* Синяя рамка */
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #1f2937;
+  background: rgba(26, 26, 46, 0.7);
 }
 
-.inputArea:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
-
-/* Стиль для textarea вывода (вторая) */
 .outputArea {
-  border: 1px solid #d1d5db; /* Серая рамка */
-  background-color: rgba(249, 250, 251, 0.9);
-  color: #374151;
-  cursor: default; /* Курсор по умолчанию */
-  user-select: text; /* Разрешаем выделение текста */
+  background: rgba(26, 26, 46, 0.3);
 }
 
 .buttonsDiv {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 .buttons {
-  padding: 10px 10px;
-  width: 110px;
-  height: 44px;
+  flex: 1;
+  padding: 0.8rem 1.5rem;
   border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
-  color: white;
   border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.buttons:hover {
-  transform: translateY(-2px);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .delete {
-  background-color: #ef4444; /* Красный */
-  margin-top: 83px;
+  background: rgba(248, 113, 113, 0.2);
+  color: var(--error);
 }
+
 .delete:hover {
-  background-color: #dc2626;
+  background: rgba(248, 113, 113, 0.3);
 }
 
 .save {
-  background-color: #22c55e; /* Зелёный */
-}
-.save:hover {
-  background-color: #16a34a;
+  background: rgba(74, 222, 128, 0.2);
+  color: var(--success);
 }
 
-.plusButtons {
+.save:hover {
+  background: rgba(74, 222, 128, 0.3);
+}
+
+.translationHistory {
+  margin-top: 2rem;
+  background: rgba(15, 52, 96, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.historyHeader {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.historyTitle {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.clearHistory {
+  background: transparent;
+  border: none;
+  color: var(--text-gray);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.clearHistory:hover {
+  color: var(--error);
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.historyItem {
+  background: rgba(26, 26, 46, 0.5);
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.historyText {
+  flex: 1;
+}
+
+.historyLanguages {
+  color: var(--text-gray);
+  font-size: 0.9rem;
+  min-width: 100px;
+  text-align: right;
+}
+
+.loadingDots::after {
+  content: '.';
+  animation: dots 1.5s infinite steps(3, end);
+}
+
+@keyframes dots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60%, 100% { content: '...'; }
+}
+
+@media (max-width: 768px) {
+  .translator {
+    padding: 1rem;
+  }
+  
+  .languageSelector {
+    flex-direction: column;
+  }
+  
+  .swapButton {
+    transform: rotate(90deg);
+  }
+  
+  .swapButton:hover {
+    transform: rotate(270deg);
+  }
+  
+  .buttons {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
 }

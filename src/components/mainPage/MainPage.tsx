@@ -2,164 +2,244 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './mainPage.module.css'
 
+function MainPage() {
+  type Language = { code: string; name: string };
+  type Direction = { from: string, to: string };
+  type HistoryItem = { 
+    id: number; 
+    input: string; 
+    output: string; 
+    direction: Direction 
+  };
 
-function MainPage(){
-    type Language = {
-        code: string;
-        name: string;
-};
-    type Direction = {
-        from: string,
-        to: string,
+  const [inputText, setInputText] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [outputText, setOutputText] = useState<string>('');
+  const [languages, setLanguages] = useState<Language[]>([]);
+  const [direction, setDirection] = useState<Direction>({ from: "ru", to: "en" });
+  const [translationHistory, setTranslationHistory] = useState<HistoryItem[]>([]);
+  
+  const latestRequestId = useRef(0);
+  
+  useEffect(() => {
+    // Загрузка истории из localStorage
+    const savedHistory = localStorage.getItem('translationHistory');
+    if (savedHistory) {
+      setTranslationHistory(JSON.parse(savedHistory));
     }
-    const [inputText, setInptutText] = useState<string>('')
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [dots, setDots] = useState<string>('');
-    const [outputText, setOutputText] = useState<string>('')
-    const [languages, setLanguages] = useState<Language[]>([]);
-    const [direction, setDirection] = useState<Direction>({
-        from: "ru",
-        to: "en",
-    })
-    const latestRequestId = useRef(0);
-    useEffect(() => {
-        const fetchLanguages = async () => {
-            try {
-                const response = await fetch('https://lingva.ml/api/v1/languages');
-                if(!response.ok){throw new Error('Ошбка загрузки языков')};
-                const data = await response.json();
-                setLanguages(data.languages);
-            } catch (error) {
-                console.log(error)
-                setLanguages([
+
+    // Загрузка языков
+    const fetchLanguages = async () => {
+      try {
+        const response = await fetch('https://lingva.ml/api/v1/languages');
+        if (!response.ok) throw new Error('Ошибка загрузки языков');
+        const data = await response.json();
+        setLanguages(data.languages);
+      } catch (error) {
+        console.error(error);
+        setLanguages([
           { code: 'en', name: 'English' },
           { code: 'ru', name: 'Russian' },
           { code: 'es', name: 'Spanish' },
           { code: 'fr', name: 'French' },
+          { code: 'de', name: 'German' },
+          { code: 'it', name: 'Italian' },
         ]);
-            }
-        }
-        fetchLanguages()
-    }, []);
-
-    function handleLanguageChangeFrom (el: any) {
-        setDirection(prev => ({...prev, from: el.target.value}));
-    };
-    function handleLanguageChangeTo (el: any) {
-        setDirection(prev => ({...prev, to: el.target.value}))
-    };
-
-    async function fetchTranslate (text: string) {
-        try{
-            const response = await fetch(`https://lingva.ml/api/v1/${direction.from}/${direction.to}/${text}`);
-            if(!response.ok) {throw new Error('респонс не окей')}
-            const data = await response.json();
-            console.log(data)
-            return data
-        } catch (error){
-            console.log(error)
-        }
-
-    };
-
-    // КЛЮЧЕВОЕ
-    useEffect(() => {
-  if (inputText.trim() === "") {
-    setOutputText("");
-    return;
-  }
-  latestRequestId.current+=1;
-  const currentId = latestRequestId.current;
-
-  const delay = setTimeout(async () => {
-    setIsLoading(true)
-    const result = await fetchTranslate(inputText);
-      if (currentId === latestRequestId.current) {
-    if (result && result.translation) {
-      setOutputText(result.translation);
-    } else {
-      setOutputText("Ошибка перевода, скорее всего слишком много обращений к апи за определенный промежуток времени, подождите 15сек+- да и вообще оно бесплатное и работает плохо");
-    }}
-    setIsLoading(false)
-  }, 500); // 1 секунда задержки
-
-  return () => clearTimeout(delay); // отменить прошлую задержку, если ввод продолжается
-}, [inputText, direction]);
-
-    const handleInputChange = async ({target}: any) => {
-        const newText = target.value;
-        setInptutText(newText)
+      }
     }
+    fetchLanguages();
+  }, []);
 
-    // тут анимация точек 
-useEffect(() => {
-  if (!isLoading) {
-    setDots('');
-    return;
-  }
+  // Сохранение истории в localStorage
+  useEffect(() => {
+    localStorage.setItem('translationHistory', JSON.stringify(translationHistory));
+  }, [translationHistory]);
 
-  let i = 0;
-  const interval = setInterval(() => {
-    if (i === 0) setDots('.');
-    else if (i === 1) setDots('..');
-    else setDots('...');
+  const swapLanguages = () => {
+    setDirection(prev => ({ from: prev.to, to: prev.from }));
+  };
 
-    i = (i + 1) % 3; // циклим i от 0 до 2
-  }, 240);
+  async function fetchTranslate(text: string) {
+    try {
+      const response = await fetch(
+        `https://lingva.ml/api/v1/${direction.from}/${direction.to}/${encodeURIComponent(text)}`
+      );
+      if (!response.ok) throw new Error('Ошибка перевода');
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
 
-  return () => clearInterval(interval); // очищаем интервал при изменении isLoading или размонтировании
-}, [isLoading]);
-
-
-    function handleDeleteClick() {
-        setInptutText('')
-    };
+  useEffect(() => {
+    if (inputText.trim() === "") {
+      setOutputText("");
+      return;
+    }
     
-    function handleSaveClick() {
-        
-    }
+    latestRequestId.current += 1;
+    const currentId = latestRequestId.current;
+    
+    const delay = setTimeout(async () => {
+      setIsLoading(true);
+      const result = await fetchTranslate(inputText);
+      
+      if (currentId === latestRequestId.current) {
+        if (result?.translation) {
+          setOutputText(result.translation);
+          
+          // Добавляем в историю
+          const newHistoryItem = {
+            id: Date.now(),
+            input: inputText,
+            output: result.translation,
+            direction: { ...direction }
+          };
+          
+          setTranslationHistory(prev => [newHistoryItem, ...prev.slice(0, 49)]);
+        } else {
+          setOutputText("Ошибка перевода. Пожалуйста, попробуйте позже.");
+        }
+        setIsLoading(false);
+      }
+    }, 500);
 
-    return(
-        // ниже див всего переводчика в целом
-        <main className={styles.translator}> 
-            {/* ниже див одной секции с выбором языка и textarea */}
-            <div className={styles.plusButtons}>
-                <div className={styles.translatorPart}> 
-                    <select className={styles.language} value={direction.from} onChange={(handleLanguageChangeFrom)} >
-                        {languages.map((lang) => (
-                            <option key={lang.code} value={lang.code}>{lang.name}</option>
-                        ))}
-                    </select>
-                    <textarea className={`${styles.areas} ${styles.inputArea}`} name="area1" id="area1" placeholder='Введите слово для перевода'
-                    value={inputText}
-                    onChange={handleInputChange}></textarea>
-                </div>
-                            {/* кнопки */}
-                <div className={styles.buttonsDiv}>
-                    <button className={`${styles.buttons} ${styles.delete}`} onClick={handleDeleteClick}>стереть</button>
-                    <button className={`${styles.buttons} ${styles.save}`}>сохранить в..</button>
-                </div>
+    return () => clearTimeout(delay);
+  }, [inputText, direction]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputText(e.target.value);
+  };
+
+  const handleDeleteClick = () => {
+    setInputText('');
+    setOutputText('');
+  };
+
+  const handleSaveClick = () => {
+    if (inputText.trim() && outputText.trim()) {
+      alert(`Фраза сохранена: ${inputText} → ${outputText}`);
+      // Здесь будет логика сохранения в словарь
+    }
+  };
+
+  const clearHistory = () => {
+    setTranslationHistory([]);
+  };
+
+  return (
+    <div>
+      <div className={styles.translator}>
+        <div className={styles.translatorHeader}>
+          <h1>Умный Переводчик</h1>
+          <p>Переводите слова и фразы между 100+ языками в реальном времени</p>
+        </div>
+        
+        <div className={styles.plusButtons}>
+          <div className={styles.translatorPart}>
+            <div className={styles.languageSelector}>
+              <select 
+                className={styles.language} 
+                value={direction.from} 
+                onChange={(e) => setDirection(prev => ({...prev, from: e.target.value}))}
+              >
+                {languages.map(lang => (
+                  <option key={lang.code} value={lang.code}>{lang.name}</option>
+                ))}
+              </select>
+              
+              <button 
+                className={styles.swapButton}
+                onClick={swapLanguages}
+                title="Поменять языки местами"
+              >
+                <span className="material-icons">swap_horiz</span>
+              </button>
+              
+              <select 
+                className={styles.language} 
+                value={direction.to} 
+                onChange={(e) => setDirection(prev => ({...prev, to: e.target.value}))}
+              >
+                {languages.map(lang => (
+                  <option key={lang.code} value={lang.code}>{lang.name}</option>
+                ))}
+              </select>
             </div>
-            {/* секция вторая часть переводчика */}
-            <div className={styles.translatorPart}>
-                <select className={styles.language} value={direction.to} onChange={handleLanguageChangeTo}>
-                    {languages.map((lang) => (
-                        <option key={lang.code} value={lang.code}>{lang.name}</option>
-                    ))}
-                </select>
-                <textarea 
-                className={`${styles.areas} ${styles.outputArea}`} 
-                readOnly 
-                disabled={false}
-                name="area2" 
-                id="area2" 
-                placeholder='перевод'
-                value={isLoading? `Переводим${dots}` : outputText}
-                ></textarea>
+            
+            <textarea 
+              className={`${styles.areas} ${styles.inputArea}`}
+              placeholder='Введите текст для перевода...'
+              value={inputText}
+              onChange={handleInputChange}
+            />
+            
+            <div className={styles.buttonsDiv}>
+              <button 
+                className={`${styles.buttons} ${styles.delete}`}
+                onClick={handleDeleteClick}
+                disabled={!inputText}
+              >
+                <span className="material-icons">delete</span>
+                Очистить
+              </button>
+              <button 
+                className={`${styles.buttons} ${styles.save}`}
+                onClick={handleSaveClick}
+                disabled={!outputText.trim()}
+              >
+                <span className="material-icons">bookmark</span>
+                Сохранить
+              </button>
             </div>
-        </main>
-    )
-};
+          </div>
+          
+          <div className={styles.translatorPart}>
+            <textarea 
+              className={`${styles.areas} ${styles.outputArea}`}
+              readOnly
+              placeholder={isLoading ? 'Перевод...' : 'Результат перевода'}
+              value={isLoading ? 'Перевод' + (outputText ? ' (обновление)...' : '...') : outputText}
+            />
+          </div>
+        </div>
+      </div>
+
+      {translationHistory.length > 0 && (
+        <div className={styles.translationHistory}>
+          <div className={styles.historyHeader}>
+            <h2 className={styles.historyTitle}>
+              <span className="material-icons">history</span>
+              История переводов
+            </h2>
+            <button 
+              className={styles.clearHistory}
+              onClick={clearHistory}
+            >
+              <span className="material-icons">delete_sweep</span>
+              Очистить
+            </button>
+          </div>
+          
+          <div className={styles.historyList}>
+            {translationHistory.map(item => (
+              <div key={item.id} className={styles.historyItem}>
+                <div className={styles.historyText}>
+                  <div><strong>{item.input}</strong></div>
+                  <div>{item.output}</div>
+                </div>
+                <div className={styles.historyLanguages}>
+                  {languages.find(l => l.code === item.direction.from)?.name} → 
+                  {languages.find(l => l.code === item.direction.to)?.name}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default MainPage;
-
