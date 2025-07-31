@@ -187,7 +187,7 @@ function MainPage() {
               <button 
                 className={`${styles.buttons} ${styles.save}`}
                 onClick={handleSaveClick}
-                disabled={!outputText.trim()}
+                disabled={!outputText.trim() || outputText.includes('Ошибка, слишком много запросов в минуту, подождите 15 сек')}
               >
                 <span className="material-icons">bookmark</span>
                 Сохранить
