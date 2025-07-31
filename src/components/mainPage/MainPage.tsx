@@ -226,8 +226,8 @@ function MainPage() {
             {translationHistory.map(item => (
               <div key={item.id} className={styles.historyItem}>
                 <div className={styles.historyText}>
-                  <div><strong>{item.input}</strong></div>
-                  <div>{item.output}</div>
+                  <div className={styles.historyFix}><strong>{item.input}</strong></div>
+                  <div className={styles.historyFix}>{item.output}</div>
                 </div>
                 <div className={styles.historyLanguages}>
                   {languages.find(l => l.code === item.direction.from)?.name} → 
