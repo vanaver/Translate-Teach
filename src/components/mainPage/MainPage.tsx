@@ -3,6 +3,19 @@ import { useState, useEffect, useRef } from 'react';
 import styles from './mainPage.module.css'
 
 function MainPage() {
+  type WordPair = {
+  original: string;
+  translation: string;
+};
+
+  type Dictionary = {
+  id: number;
+  name: string;
+  description: string;
+  words: WordPair[];
+  from: string;
+  to: string;
+};
   type Language = { code: string; name: string };
   type Direction = { from: string, to: string };
   type HistoryItem = { 
@@ -11,15 +24,39 @@ function MainPage() {
     output: string; 
     direction: Direction 
   };
-
   const [inputText, setInputText] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [outputText, setOutputText] = useState<string>('');
   const [languages, setLanguages] = useState<Language[]>([]);
   const [direction, setDirection] = useState<Direction>({ from: "ru", to: "en" });
   const [translationHistory, setTranslationHistory] = useState<HistoryItem[]>([]);
+  const [dictionaries, setDictionaries] = useState<Dictionary[]>([]);
+  const [selectedDictionary, setSelectedDictionary] = useState<number | null>(null);
+  const [showSaveModal, setShowSaveModal] = useState(false);
   
   const latestRequestId = useRef(0);
+
+  useEffect(()=> {
+    const savedDictionaries = localStorage.getItem('dictionaries');
+    if (savedDictionaries) {
+      setDictionaries(JSON.parse(savedDictionaries));
+    } else {
+      setDictionaries([{
+      id: 1,
+      name: 'Осной словарь',
+      description: 'Ваш словарь котоырй есть по умолчанию',
+      words: [
+        { original: 'Привет', translation: 'Hello' },
+        { original: 'Спасибо', translation: 'Thank you' },
+        { original: 'Пожалуйста', translation: 'Please' },
+        { original: 'Как дела?', translation: 'How are you?' },
+        { original: 'Добро пожаловать', translation: 'Welcome' },
+      ],
+      from: 'ru',
+      to: 'en'
+    }])
+    }
+  },[])
   
   useEffect(() => {
     // Загрузка истории из localStorage
@@ -119,14 +156,82 @@ function MainPage() {
 
   const handleSaveClick = () => {
     if (inputText.trim() && outputText.trim()) {
-      alert(`Фраза сохранена: ${inputText} → ${outputText}`);
-      // Здесь будет логика сохранения в словарь
+      setShowSaveModal(true);
     }
   };
 
   const clearHistory = () => {
     setTranslationHistory([]);
   };
+
+  function handleSaveModalClick() {
+    if (selectedDictionary === null) return;
+
+    const selectedDict = dictionaries.find(dict=> dict.id === selectedDictionary);
+    if (!selectedDict) {console.log("нету словаря с таким айди"); return};
+
+    const currentDirection = `${direction.from}-${direction.to}`;
+    const dictDirection = `${selectedDict.from}-${selectedDict.to}`;
+    const reversedDirection = `${direction.to}-${direction.from}`;
+
+    if(currentDirection === dictDirection) {
+      const isDuplicate = selectedDict.words.some(
+        word => word.original === inputText && word.translation === outputText
+      );
+      if(!isDuplicate) {
+        const updateDictionaries = dictionaries.map(dict => {
+          if(dict.id === selectedDictionary){
+            return {
+              ...dict,
+              words: [...dict.words, {original:inputText, translation: outputText}]
+            }
+          } return dict;
+        });
+        setDictionaries(updateDictionaries);
+        localStorage.setItem('dictionaries', JSON.stringify(updateDictionaries));
+        alert("Фраза успешно добавлена в словарь")
+      } else alert('Эта фраза уже есть в словаре')
+    }
+     else if (reversedDirection === dictDirection) {
+    // Проверяем, нет ли уже такой пары в словаре (в обратном порядке)
+    const isDuplicate = selectedDict.words.some(
+      word => word.original === outputText && word.translation === inputText
+    );
+    
+    if (!isDuplicate) {
+      // Обновляем словари (меняем местами слова)
+      const updatedDictionaries = dictionaries.map(dict => {
+        if (dict.id === selectedDictionary) {
+          return {
+            ...dict,
+            words: [...dict.words, { original: outputText, translation: inputText }]
+          };
+        }
+        return dict;
+      });
+      
+      setDictionaries(updatedDictionaries);
+      localStorage.setItem('dictionaries', JSON.stringify(updatedDictionaries));
+      alert("Фраза успешно добавлена в словарь (с заменой направления)!");
+    } else {
+      alert("Эта фраза (в обратном порядке) уже есть в словаре!");
+    }
+  }
+  // Если направления не совпадают
+  else {
+    const fromLang = languages.find(l => l.code === selectedDict.from)?.name || selectedDict.from;
+    const toLang = languages.find(l => l.code === selectedDict.to)?.name || selectedDict.to;
+    
+    alert(`Направление перевода не совпадает с направлением словаря!\n\n` +
+          `Текущий перевод: ${languages.find(l => l.code === direction.from)?.name} → ${languages.find(l => l.code === direction.to)?.name}\n` +
+          `Направление словаря: ${fromLang} → ${toLang}`);
+    return;
+  }
+  
+  // Закрываем модальное окно
+  setShowSaveModal(false);
+  setSelectedDictionary(null);
+  }
 
   return (
     <div>
@@ -237,6 +342,53 @@ function MainPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+            {/* Модальное окно для сохранения в словарь */}
+      {showSaveModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.saveModal}>
+            <div className={styles.modalContent}>
+              <h2 className={styles.modalTitle}>Сохранить перевод</h2>
+              <h3>{inputText}  -  {outputText}</h3>
+              <p className={styles.modalSubtitle}>Выберите словарь для сохранения:</p>
+              
+              <div className={styles.dictionariesList}>
+                {dictionaries.map(dict => (
+                  <div 
+                    key={dict.id}
+                    className={`${styles.dictionaryCard} ${
+                      selectedDictionary === dict.id ? styles.selectedCard : ''
+                    }`}
+                    onClick={() => setSelectedDictionary(dict.id)}
+                  >
+                    <h3>{dict.name}</h3>
+                    <p>{dict.description}</p>
+                    <div className={styles.languageBadge}>
+                      {languages.find(l => l.code === dict.from)?.name} → 
+                      {languages.find(l => l.code === dict.to)?.name}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className={styles.modalButtons}>
+                <button 
+                  className={`${styles.modalButton} ${styles.cancelButton}`}
+                  onClick={() =>{ setShowSaveModal(false); setSelectedDictionary(null)}}
+                >
+                  Отмена
+                </button>
+                <button 
+                  className={`${styles.modalButton} ${styles.saveButton}`}
+                  onClick={handleSaveModalClick}
+                  disabled={!selectedDictionary}
+                >
+                  Сохранить
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
