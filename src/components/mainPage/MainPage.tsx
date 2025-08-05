@@ -217,7 +217,7 @@ function MainPage() {
       alert("Эта фраза (в обратном порядке) уже есть в словаре!");
     }
   }
-  // Если направления не совпадают
+
   else {
     const fromLang = languages.find(l => l.code === selectedDict.from)?.name || selectedDict.from;
     const toLang = languages.find(l => l.code === selectedDict.to)?.name || selectedDict.to;
@@ -228,7 +228,7 @@ function MainPage() {
     return;
   }
   
-  // Закрываем модальное окно
+ 
   setShowSaveModal(false);
   setSelectedDictionary(null);
   }

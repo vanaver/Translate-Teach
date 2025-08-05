@@ -117,6 +117,192 @@
   gap: 0.5rem;
 }
 
+/* Стили для модального окна */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.createModal {
+  background: rgba(15, 52, 96, 0.95);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.4);
+  outline: none;
+  padding: 2rem;
+  animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modalTitle {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, var(--accent-light), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+  background: rgba(26, 26, 46, 0.6);
+  color: var(--text-light);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: var(--accent-light);
+  box-shadow: 0 0 0 3px rgba(143, 148, 251, 0.3);
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.languageSelector {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.swapButton {
+  background: var(--secondary);
+  border: none;
+  color: var(--text-light);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 0.5rem;
+}
+
+.swapButton:hover {
+  background: var(--accent);
+  transform: rotate(180deg);
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.modalButton {
+  padding: 0.8rem 1.8rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelButton {
+  background: rgba(248, 113, 113, 0.2);
+  color: var(--error);
+}
+
+.cancelButton:hover {
+  background: rgba(248, 113, 113, 0.3);
+}
+
+.saveButton {
+  background: rgba(74, 222, 128, 0.2);
+  color: var(--success);
+}
+
+.saveButton:hover {
+  background: rgba(74, 222, 128, 0.3);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .languageSelector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .swapButton {
+    transform: rotate(90deg);
+    align-self: center;
+    margin: 0;
+  }
+  
+  .swapButton:hover {
+    transform: rotate(270deg);
+  }
+  
+  .modalButtons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .createModal {
+    padding: 1.5rem;
+  }
+  
+  .modalButton {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
