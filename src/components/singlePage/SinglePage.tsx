@@ -97,6 +97,13 @@ function SinglePage() {
     return <div className={styles.loading}>Загрузка словаря...</div>;
   }
 
+  const handleDeleteDictionary = () => {
+    const updatedDictionaries = dictionaries.filter(d => d.id !== dictionary.id);
+    setDictionaries(updatedDictionaries);
+    localStorage.setItem('dictionaries', JSON.stringify(updatedDictionaries));
+    navigate(-1);
+};
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -127,6 +134,15 @@ function SinglePage() {
             <span className="material-icons">{isEditing ? 'done' : 'edit'}</span>
             {isEditing ? 'Завершить' : 'Редактировать'}
           </button>
+            {isEditing && (
+    <button 
+      className={`${styles.actionButton} ${styles.deleteDictionaryButton}`}
+      onClick={handleDeleteDictionary}
+    >
+      <span className="material-icons">delete_forever</span>
+      Удалить словарь
+    </button>
+  )}
           <button className={`${styles.actionButton} ${styles.practiceButton}`}>
             <span className="material-icons">school</span>
             Практика
