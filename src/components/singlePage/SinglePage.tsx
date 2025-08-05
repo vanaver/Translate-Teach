@@ -22,6 +22,7 @@ function SinglePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [dictionary, setDictionary] = useState<Dictionary | null>(null);
   const [filteredWords, setFilteredWords] = useState<WordPair[]>([]);
+  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,8 +39,8 @@ function SinglePage() {
       // Если в localStorage нет, устанавливаем начальный словарь
       const initialDict = {
         id: 1,
-        name: 'Осной словарь',
-        description: 'Ваш словарь котоырй есть по умолчанию',
+        name: 'Основной словарь',
+        description: 'Ваш словарь по умолчанию',
         words: [
           { original: 'Привет', translation: 'Hello' },
           { original: 'Спасибо', translation: 'Thank you' },
@@ -69,6 +70,29 @@ function SinglePage() {
     setFilteredWords(filtered);
   }, [searchTerm, dictionary]);
 
+  const handleDeleteWord = (wordToDelete: WordPair) => {
+    if (!dictionary) return;
+    
+    // Создаем новый массив без удаленного слова
+    const updatedWords = dictionary.words.filter(
+      word => word.original !== wordToDelete.original || 
+             word.translation !== wordToDelete.translation
+    );
+    
+    // Обновляем текущий словарь
+    const updatedDictionary = { ...dictionary, words: updatedWords };
+    setDictionary(updatedDictionary);
+    
+    // Обновляем список всех словарей
+    const updatedDictionaries = dictionaries.map(d => 
+      d.id === dictionary.id ? updatedDictionary : d
+    );
+    setDictionaries(updatedDictionaries);
+    
+    // Сохраняем в localStorage
+    localStorage.setItem('dictionaries', JSON.stringify(updatedDictionaries));
+  };
+
   if (!dictionary) {
     return <div className={styles.loading}>Загрузка словаря...</div>;
   }
@@ -96,9 +120,12 @@ function SinglePage() {
         </div>
         
         <div className={styles.actions}>
-          <button className={`${styles.actionButton} ${styles.editButton}`}>
-            <span className="material-icons">edit</span>
-            Редактировать
+          <button 
+            className={`${styles.actionButton} ${isEditing ? styles.doneButton : styles.editButton}`}
+            onClick={() => setIsEditing(!isEditing)}
+          >
+            <span className="material-icons">{isEditing ? 'done' : 'edit'}</span>
+            {isEditing ? 'Завершить' : 'Редактировать'}
           </button>
           <button className={`${styles.actionButton} ${styles.practiceButton}`}>
             <span className="material-icons">school</span>
@@ -125,13 +152,28 @@ function SinglePage() {
         </h2>
         <div className={styles.wordsCount}>
           Показано: {filteredWords.length} из {dictionary.words.length}
+          {isEditing && (
+            <div className={styles.editHint}>
+              <span className="material-icons">info</span>
+              Нажмите на слово для удаления
+            </div>
+          )}
         </div>
       </div>
 
       <div className={styles.wordsList}>
         {filteredWords.length > 0 ? (
           filteredWords.map((word, index) => (
-            <div key={`${word.original}-${index}`} className={styles.wordCard}>
+            <div 
+              key={`${word.original}-${index}`} 
+              className={`${styles.wordCard} ${isEditing ? styles.editableCard : ''}`}
+              onClick={() => isEditing && handleDeleteWord(word)}
+            >
+              {isEditing && (
+                <div className={styles.deleteOverlay}>
+                  <span className="material-icons">delete_forever</span>
+                </div>
+              )}
               <div className={styles.original}>{word.original}</div>
               <div className={styles.translation}>{word.translation}</div>
             </div>

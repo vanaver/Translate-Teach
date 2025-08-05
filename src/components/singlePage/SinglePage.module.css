@@ -203,6 +203,75 @@
   opacity: 0.5;
 }
 
+
+/* Стили для режима редактирования */
+.editableCard {
+  position: relative;
+  cursor: pointer;
+  background: rgba(96, 15, 15, 0.3); /* Красноватый оттенок фона */
+  border: 1px solid rgba(255, 0, 0, 0.2); /* Легкая красная обводка */
+  transition: all 0.3s ease;
+}
+
+.editableCard:hover {
+  background: rgba(96, 15, 15, 0.5); 
+  border: 1px solid rgba(255, 0, 0, 0.4);
+  transform: translateY(-3px) scale(1.02);
+}
+
+/* Оверлей удаления */
+.deleteOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.editableCard:hover .deleteOverlay {
+  opacity: 1;
+}
+
+.deleteOverlay .material-icons {
+  color: #ff4d4d;
+  font-size: 2.5rem;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.deleteOverlay .material-icons:hover {
+  transform: scale(1.1);
+  color: #ff1a1a;
+}
+
+/* Подсказка в режиме редактирования */
+.editHint {
+  margin-left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #ff9999;
+  font-size: 0.9rem;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+
 @media (max-width: 768px) {
   .actions {
     width: 100%;
