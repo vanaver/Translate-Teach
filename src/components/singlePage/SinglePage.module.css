@@ -14,10 +14,46 @@
   gap: 1rem;
 }
 
+
 .titleSection {
   flex: 1;
   min-width: 300px;
 }
+
+/* Добавьте в SinglePage.module.css */
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.backButton {
+  background: rgba(15, 52, 96, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-light);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.backButton:hover {
+  background: var(--secondary);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.backButton .material-icons {
+  font-size: 1.5rem;
+  vertical-align: middle;
+}
+
+/* Остальные стили остаются без изменений */
 
 .dictionaryName {
   font-size: 2rem;
@@ -145,6 +181,26 @@
   padding: 3rem;
   color: var(--text-gray);
   grid-column: 1 / -1;
+}
+
+/* SinglePage.module.css */
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: var(--text-gray);
+}
+
+.emptyWords {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-gray);
+}
+
+.emptyWords .material-icons {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
 }
 
 @media (max-width: 768px) {

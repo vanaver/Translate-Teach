@@ -10,7 +10,7 @@ function Slovariki() {
   const [dictionaries, setDictionaries] = useState<Dictionary[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [languages, setLanguages] = useState<Language[]>([]);
-   const [newDictionary, setNewDictionary] = useState({
+  const [newDictionary, setNewDictionary] = useState({
     name: '',
     description: '',
     from: 'ru',
@@ -19,12 +19,12 @@ function Slovariki() {
 
   const navigate = useNavigate();
 
-  useEffect(()=> {
-      const savedDictionaries = localStorage.getItem('dictionaries');
-      if (savedDictionaries) {
-        setDictionaries(JSON.parse(savedDictionaries));
-      } else {
-        setDictionaries([{
+  useEffect(() => {
+    const savedDictionaries = localStorage.getItem('dictionaries');
+    if (savedDictionaries) {
+      setDictionaries(JSON.parse(savedDictionaries));
+    } else {
+      setDictionaries([{
         id: 1,
         name: 'Осной словарь',
         description: 'Ваш словарь котоырй есть по умолчанию',
@@ -38,9 +38,9 @@ function Slovariki() {
         from: 'ru',
         to: 'en'
       }])
-      }
+    }
 
-          const fetchLanguages = async () => {
+    const fetchLanguages = async () => {
       try {
         const response = await fetch('https://lingva.ml/api/v1/languages');
         if (!response.ok) throw new Error('Ошибка загрузки языков');
@@ -60,7 +60,7 @@ function Slovariki() {
     };
     fetchLanguages();
 
-    },[])
+  }, [])
 
   useEffect(() => {
     localStorage.setItem('dictionaries', JSON.stringify(dictionaries));
@@ -70,12 +70,22 @@ function Slovariki() {
     navigate(`/dictionaries/${name}`);
   };
 
-  function makeNewDictionary () {
-     if (!newDictionary.name.trim()) {
+  function makeNewDictionary() {
+    if (!newDictionary.name.trim()) {
       alert("Пожалуйста, введите название словаря");
       return;
     }
-    
+  
+  // Проверка на уникальность имени
+  const newName = newDictionary.name.trim();
+  const isNameTaken = dictionaries.some(dict => 
+    dict.name.toLowerCase() === newName.toLowerCase()
+  );
+  
+  if (isNameTaken) {
+    alert(`Словарь с названием "${newName}" уже существует. Пожалуйста, выберите уникальное название.`);
+    return;
+  }
     const newDict: Dictionary = {
       id: Date.now(),
       name: newDictionary.name,
@@ -84,7 +94,7 @@ function Slovariki() {
       from: newDictionary.from,
       to: newDictionary.to
     };
-    
+
     setDictionaries([...dictionaries, newDict]);
     setNewDictionary({
       name: '',
@@ -108,7 +118,7 @@ function Slovariki() {
     <div className={styles.dictionariesDiv}>
       <div className={styles.header}>
         <h1 className={styles.title}>Мои словари:</h1>
-        <button className={styles.createButton}  onClick={() => setOpenModal(true)}>
+        <button className={styles.createButton} onClick={() => setOpenModal(true)}>
           <span className="material-icons" >add</span>
           Новый словарь
         </button>
@@ -117,8 +127,8 @@ function Slovariki() {
       <div className={styles.dictionariesGrid}>
         {dictionaries.length > 0 ? (
           dictionaries.map(dict => (
-            <div 
-              key={dict.id} 
+            <div
+              key={dict.id}
               className={styles.dictionaryItem}
               onClick={() => handleClick(dict.name)}
             >
@@ -144,59 +154,59 @@ function Slovariki() {
           </div>
         )}
       </div>
-       {/* Модальное окно создания словаря */}
+      {/* Модальное окно создания словаря */}
       {openModal && (
         <div className={styles.modalOverlay} onClick={() => setOpenModal(false)}>
           <div className={styles.createModal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalContent}>
               <h2 className={styles.modalTitle}>Создать новый словарь</h2>
-              
+
               <div className={styles.formGroup}>
                 <label>Название словаря</label>
                 <input
                   type="text"
                   value={newDictionary.name}
-                  onChange={(e) => setNewDictionary({...newDictionary, name: e.target.value})}
+                  onChange={(e) => setNewDictionary({ ...newDictionary, name: e.target.value })}
                   placeholder="Введите название"
                 />
               </div>
-              
+
               <div className={styles.formGroup}>
                 <label>Описание</label>
                 <textarea
                   value={newDictionary.description}
-                  onChange={(e) => setNewDictionary({...newDictionary, description: e.target.value})}
+                  onChange={(e) => setNewDictionary({ ...newDictionary, description: e.target.value })}
                   placeholder="Введите описание словаря"
                   rows={3}
                 />
               </div>
-              
+
               <div className={styles.languageSelector}>
                 <div className={styles.formGroup}>
                   <label>Перевод с</label>
                   <select
                     value={newDictionary.from}
-                    onChange={(e) => setNewDictionary({...newDictionary, from: e.target.value})}
+                    onChange={(e) => setNewDictionary({ ...newDictionary, from: e.target.value })}
                   >
                     {languages.map(lang => (
                       <option key={lang.code} value={lang.code}>{lang.name}</option>
                     ))}
                   </select>
                 </div>
-                
-                <button 
+
+                <button
                   className={styles.swapButton}
                   onClick={swapLanguages}
                   title="Поменять языки местами"
                 >
                   <span className="material-icons">swap_horiz</span>
                 </button>
-                
+
                 <div className={styles.formGroup}>
                   <label>Перевод на</label>
                   <select
                     value={newDictionary.to}
-                    onChange={(e) => setNewDictionary({...newDictionary, to: e.target.value})}
+                    onChange={(e) => setNewDictionary({ ...newDictionary, to: e.target.value })}
                   >
                     {languages.map(lang => (
                       <option key={lang.code} value={lang.code}>{lang.name}</option>
@@ -204,24 +214,24 @@ function Slovariki() {
                   </select>
                 </div>
               </div>
-              
+
               <div className={styles.modalButtons}>
-                <button 
+                <button
                   className={`${styles.modalButton} ${styles.cancelButton}`}
-                  onClick={() => {setOpenModal(false); setNewDictionary({
-    name: '',
-    description: '',
-    from: 'ru',
-    to: 'en'
-  })}}
+                  onClick={() => {
+                    setOpenModal(false); setNewDictionary({
+                      name: '',
+                      description: '',
+                      from: 'ru',
+                      to: 'en'
+                    })
+                  }}
                 >
                   Отмена
                 </button>
-                <button 
+                <button
                   className={`${styles.modalButton} ${styles.saveButton}`}
-                  onClick={makeNewDictionary}
-                >
-                  Создать
+                  onClick={makeNewDictionary}>Создать
                 </button>
               </div>
             </div>
