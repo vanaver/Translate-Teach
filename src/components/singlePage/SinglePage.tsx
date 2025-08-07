@@ -370,19 +370,19 @@ const handleCardClick = () => {
     
     {showTranslation && (
       <div className={styles.rememberButtons}>
+         <button 
+          className={styles.notRememberButton}
+          onClick={() => handleRemember(false)}
+        >
+          <span className="material-icons">close</span>
+          Не помню
+        </button>
         <button 
           className={styles.rememberButton}
           onClick={() => handleRemember(true)}
         >
           <span className="material-icons">check</span>
           Помню
-        </button>
-        <button 
-          className={styles.notRememberButton}
-          onClick={() => handleRemember(false)}
-        >
-          <span className="material-icons">close</span>
-          Не помню
         </button>
       </div>
     )}
@@ -407,14 +407,15 @@ const handleCardClick = () => {
             </div>
             
             <div className={styles.resultsStats}>
+               <div className={styles.statItem}>
+                <span className={styles.statValue}>{notRememberedWords.length}</span>
+                <span className={styles.statLabel}>Не помню</span>
+              </div>
               <div className={styles.statItem}>
                 <span className={styles.statValue}>{rememberedWords.length}</span>
                 <span className={styles.statLabel}>Помню</span>
               </div>
-              <div className={styles.statItem}>
-                <span className={styles.statValue}>{notRememberedWords.length}</span>
-                <span className={styles.statLabel}>Не помню</span>
-              </div>
+
             </div>
             
             <div className={styles.resultsButtons}>

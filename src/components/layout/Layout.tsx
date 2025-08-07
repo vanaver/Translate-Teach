@@ -32,7 +32,7 @@ function Layout() {
         <Outlet />
       </div>
       <footer className={styles.footer}>
-        <p className={styles.author}>Translate&Teach © 2023 | Инструмент для изучения языков</p>
+        <p className={styles.author}>Translate&Teach © 2025 | Инструмент для изучения языков</p>
       </footer>
     </div>
   )

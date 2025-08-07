@@ -76,3 +76,9 @@
   color: var(--text-gray);
   font-size: 0.9rem;
 }
+
+@media (max-width: 465px) {
+  .separator {
+    display: none;
+}
+}

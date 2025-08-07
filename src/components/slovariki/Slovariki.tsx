@@ -26,7 +26,7 @@ function Slovariki() {
     } else {
       setDictionaries([{
         id: 1,
-        name: 'Осной словарь',
+        name: 'Основной словарь',
         description: 'Ваш словарь котоырй есть по умолчанию',
         words: [
           { original: 'Привет', translation: 'Hello' },

@@ -274,6 +274,7 @@
   .languageSelector {
     flex-direction: column;
     align-items: stretch;
+    gap: 5px;
   }
   
   .swapButton {
