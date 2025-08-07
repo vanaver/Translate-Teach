@@ -31,6 +31,8 @@ function SinglePage() {
   const [rememberedWords, setRememberedWords] = useState<WordPair[]>([]);
   const [notRememberedWords, setNotRememberedWords] = useState<WordPair[]>([]);
   const [mixWords, setMixWords] = useState<WordPair[]>([])
+  const [showResults, setShowResults] = useState(false);
+  const [rememberedPercentage, setRememberedPercentage] = useState(0);
   const navigate = useNavigate();
 
     useEffect(() => {
@@ -140,21 +142,41 @@ const handleStartPractice = () => {
 const handleRemember = (remembered: boolean) => {
   const currentWord = mixWords[currentWordIndex];
   
+  // Обновляем состояния сразу
   if (remembered) {
-    setRememberedWords([...rememberedWords, currentWord]);
+    setRememberedWords(prev => [...prev, currentWord]);
   } else {
-    setNotRememberedWords([...notRememberedWords, currentWord]);
+    setNotRememberedWords(prev => [...prev, currentWord]);
   }
   
-  // Переходим к следующему слову или завершаем
-  if (currentWordIndex < mixWords.length - 1) {
-    setCurrentWordIndex(currentWordIndex + 1);
-    setShowTranslation(false);
-  } else {
-    // Завершаем практику
+  // Проверяем, последнее ли это слово
+  const isLastWord = currentWordIndex >= mixWords.length - 1;
+  
+  if (isLastWord) {
+    // Для последнего слова сразу показываем результаты
+    const totalWords = mixWords.length;
+    const rememberedCount = remembered ? rememberedWords.length + 1 : rememberedWords.length;
+    const percentage = Math.round((rememberedCount / totalWords) * 100);
+    
+    setRememberedPercentage(percentage);
     setIsPracticing(false);
+    setShowResults(true);
+  } else {
+    // Переходим к следующему слову
+    setCurrentWordIndex(prev => prev + 1);
+    setShowTranslation(false);
   }
 };
+
+  const handleRestartPractice = () => {
+    setShowResults(false);
+    handleStartPractice();
+  };
+
+  const handleExitPractice = () => {
+    setShowResults(false);
+    setIsPracticing(false);
+  };
 
 const handleCardClick = () => {
   setShowTranslation(!showTranslation);
@@ -373,6 +395,45 @@ const handleCardClick = () => {
     )}
   </div>
 )}
+
+      {showResults && (
+        <div className={styles.practiceModalOverlay}>
+          <div className={styles.resultsModal}>
+            <h2>Результаты практики</h2>
+            
+            <div className={styles.resultsCircle}>
+              <div className={styles.percentage}>{rememberedPercentage}%</div>
+              <div className={styles.resultLabel}>запомнено</div>
+            </div>
+            
+            <div className={styles.resultsStats}>
+              <div className={styles.statItem}>
+                <span className={styles.statValue}>{rememberedWords.length}</span>
+                <span className={styles.statLabel}>Помню</span>
+              </div>
+              <div className={styles.statItem}>
+                <span className={styles.statValue}>{notRememberedWords.length}</span>
+                <span className={styles.statLabel}>Не помню</span>
+              </div>
+            </div>
+            
+            <div className={styles.resultsButtons}>
+              <button 
+                className={styles.restartButton}
+                onClick={handleRestartPractice}
+              >
+                Начать заново
+              </button>
+              <button 
+                className={styles.exitButton}
+                onClick={handleExitPractice}
+              >
+                Закрыть
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

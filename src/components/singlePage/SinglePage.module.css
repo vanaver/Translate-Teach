@@ -599,6 +599,122 @@
   animation: pulse 2s infinite;
 }
 
+/* SinglePage.module.css */
+/* ... существующие стили ... */
+
+/* Окно результатов */
+.resultsModal {
+  background: rgba(15, 52, 96, 0.95);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 90%;
+  max-width: 500px;
+  padding: 2.5rem;
+  text-align: center;
+  animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.resultsModal h2 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  color: white;
+  font-size: 1.8rem;
+}
+
+.resultsCircle {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 2rem;
+  border-radius: 50%;
+  background: rgba(26, 26, 46, 0.7);
+  border: 5px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.percentage {
+  font-size: 3.5rem;
+  font-weight: bold;
+  background: linear-gradient(to right, #4ade80, #22c55e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.resultLabel {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.resultsStats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2.5rem;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.statValue:first-child {
+  color: #4ade80;
+}
+
+.statValue:last-child {
+  color: #f87171;
+}
+
+.statLabel {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.resultsButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.restartButton, .exitButton {
+  padding: 0.9rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.restartButton {
+  background: linear-gradient(to right, var(--accent-light), var(--accent));
+  color: white;
+}
+
+.restartButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(106, 147, 203, 0.6);
+}
+
+.exitButton {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.exitButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 @keyframes pulse {
   0% { opacity: 0.7; }
   50% { opacity: 1; }
