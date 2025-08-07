@@ -23,7 +23,28 @@ function SinglePage() {
   const [dictionary, setDictionary] = useState<Dictionary | null>(null);
   const [filteredWords, setFilteredWords] = useState<WordPair[]>([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isPractice, setisPractice] = useState(false);
+  const [practiceDirection, setPracticeDirection] = useState<'forward' | 'reverse'>('forward');
+  const [isPracticing, setIsPracticing] = useState(false);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [showTranslation, setShowTranslation] = useState(false);
+  const [rememberedWords, setRememberedWords] = useState<WordPair[]>([]);
+  const [notRememberedWords, setNotRememberedWords] = useState<WordPair[]>([]);
+  const [mixWords, setMixWords] = useState<WordPair[]>([])
   const navigate = useNavigate();
+
+    useEffect(() => {
+    if (isPractice || isPracticing) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Очистка при размонтировании
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isPractice, isPracticing]);
 
   useEffect(() => {
     const savedDictionaries = localStorage.getItem('dictionaries');
@@ -104,6 +125,41 @@ function SinglePage() {
     navigate(-1);
 };
 
+const handleStartPractice = () => {
+  setisPractice(false);
+  
+  const words = [...dictionary.words].sort(() => Math.random() - 0.5);
+  setMixWords(words);
+  setCurrentWordIndex(0);
+  setShowTranslation(false);
+  setRememberedWords([]);
+  setNotRememberedWords([]);
+  setIsPracticing(true);
+};
+
+const handleRemember = (remembered: boolean) => {
+  const currentWord = mixWords[currentWordIndex];
+  
+  if (remembered) {
+    setRememberedWords([...rememberedWords, currentWord]);
+  } else {
+    setNotRememberedWords([...notRememberedWords, currentWord]);
+  }
+  
+  // Переходим к следующему слову или завершаем
+  if (currentWordIndex < mixWords.length - 1) {
+    setCurrentWordIndex(currentWordIndex + 1);
+    setShowTranslation(false);
+  } else {
+    // Завершаем практику
+    setIsPracticing(false);
+  }
+};
+
+const handleCardClick = () => {
+  setShowTranslation(!showTranslation);
+};
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -143,10 +199,10 @@ function SinglePage() {
       Удалить словарь
     </button>
   )}
-          <button className={`${styles.actionButton} ${styles.practiceButton}`}>
+          {!isEditing&&<button onClick={()=>setisPractice(true)} className={`${styles.actionButton} ${styles.practiceButton}`}>
             <span className="material-icons">school</span>
             Практика
-          </button>
+          </button>}
         </div>
       </div>
 
@@ -202,6 +258,121 @@ function SinglePage() {
           </div>
         )}
       </div>
+      {/* Модальное окно для практики */}
+{isPractice && (
+  <div className={styles.practiceModalOverlay} onClick={() => setisPractice(false)}>
+    <div className={styles.practiceModal} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.modalHeader}>
+        <h2>Режим практики: {dictionary.name}</h2>
+        <button 
+          className={styles.closeButton}
+          onClick={() => setisPractice(false)}
+        >
+          <span className="material-icons">close</span>
+        </button>
+      </div>
+      
+      <div className={styles.modalContent}>
+        <div className={styles.infoCard}>
+          <div className={styles.infoIcon}>
+            <span className="material-icons">help_outline</span>
+          </div>
+          <div className={styles.infoText}>
+            <h3>Как работает практика?</h3>
+            <p>Вам будет показываться слово из словаря. Попробуйте вспомнить его перевод.</p>
+            <p>Чтобы проверить, правильно ли вы его вспомнили, нажмите на карточку - появится перевод.</p>
+          </div>
+        </div>
+        
+        <div className={styles.directionSelector}>
+          <h3 className={styles.directionTitle}>
+            <span className="material-icons">translate</span>
+            Направление перевода:
+          </h3>
+          <div className={styles.toggleButtons}>
+            <button 
+              className={`${styles.toggleButton} ${practiceDirection=== 'forward'? styles.active : ''}`}
+              onClick={() => setPracticeDirection('forward')}
+            >
+              {dictionary.from.toUpperCase()} → {dictionary.to.toUpperCase()}
+            </button>
+            <button 
+              className={`${styles.toggleButton} ${practiceDirection=== 'reverse'? styles.active : ''}`}
+              onClick={() => setPracticeDirection('reverse')}
+            >
+              {dictionary.to.toUpperCase()} → {dictionary.from.toUpperCase()}
+            </button>
+          </div>
+        </div>
+        
+        <div className={styles.startPractice}>
+          <button className={styles.startButton} onClick={handleStartPractice}>
+            <span className="material-icons">play_arrow</span>
+            Начать практику
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+{isPracticing && (
+  <div className={styles.practiceModeWork}>
+    <div className={styles.practiceHeader}>
+      <button 
+        className={styles.practiceBackButton}
+        onClick={() => setIsPracticing(false)}
+      >
+        <span className="material-icons">arrow_back</span>
+        Выйти из практики
+      </button>
+      <div className={styles.progress}>
+        {currentWordIndex + 1} / {mixWords.length}
+      </div>
+    </div>
+    
+    <div 
+      className={styles.practiceCard}
+      onClick={handleCardClick}
+    >
+      {showTranslation ? (
+        practiceDirection === 'forward' 
+          ? mixWords[currentWordIndex]?.translation 
+          : mixWords[currentWordIndex]?.original
+      ) : (
+        practiceDirection === 'forward' 
+          ? mixWords[currentWordIndex]?.original 
+          : mixWords[currentWordIndex]?.translation
+      )}
+    </div>
+    
+    {showTranslation && (
+      <div className={styles.rememberButtons}>
+        <button 
+          className={styles.rememberButton}
+          onClick={() => handleRemember(true)}
+        >
+          <span className="material-icons">check</span>
+          Помню
+        </button>
+        <button 
+          className={styles.notRememberButton}
+          onClick={() => handleRemember(false)}
+        >
+          <span className="material-icons">close</span>
+          Не помню
+        </button>
+      </div>
+    )}
+    
+    {!showTranslation && (
+      <div className={styles.practiceHint}>
+        <span className="material-icons">touch_app</span>
+        Нажмите на слово, чтобы увидеть перевод
+      </div>
+    )}
+  </div>
+)}
     </div>
   );
 }
