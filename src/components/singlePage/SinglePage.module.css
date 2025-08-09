@@ -755,8 +755,15 @@
     padding: 1rem;
   }
 
+    .actions {
+    display: flex;
+    flex-direction: column;
+  }
+
   .rememberButton, .notRememberButton {
-    
+    padding: 1.3rem;
+    gap: 4px;
+    height: 70px;
   }
 
   .rememberButtons {
