@@ -1,4 +1,4 @@
-/* SinglePage.module.css */
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -20,7 +20,7 @@
   min-width: 300px;
 }
 
-/* Добавьте в SinglePage.module.css */
+
 .titleRow {
   display: flex;
   align-items: center;
@@ -53,7 +53,6 @@
   vertical-align: middle;
 }
 
-/* Остальные стили остаются без изменений */
 
 .dictionaryName {
   font-size: 2rem;
@@ -184,7 +183,6 @@
   grid-column: 1 / -1;
 }
 
-/* SinglePage.module.css */
 .loading {
   text-align: center;
   padding: 40px;
@@ -205,12 +203,11 @@
 }
 
 
-/* Стили для режима редактирования */
 .editableCard {
   position: relative;
   cursor: pointer;
-  background: rgba(96, 15, 15, 0.3); /* Красноватый оттенок фона */
-  border: 1px solid rgba(255, 0, 0, 0.2); /* Легкая красная обводка */
+  background: rgba(96, 15, 15, 0.3);
+  border: 1px solid rgba(255, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
@@ -275,7 +272,7 @@
   100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
 }
 
-/* Обновленный стиль для подсказки редактирования */
+
 .editHint {
   margin-left: 10px;
   display: inline-flex;
@@ -602,8 +599,6 @@
   animation: pulse 2s infinite;
 }
 
-/* SinglePage.module.css */
-/* ... существующие стили ... */
 
 /* Окно результатов */
 .resultsModal {

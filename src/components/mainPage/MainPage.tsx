@@ -193,13 +193,11 @@ function MainPage() {
       } else alert('Эта фраза уже есть в словаре')
     }
      else if (reversedDirection === dictDirection) {
-    // Проверяем, нет ли уже такой пары в словаре (в обратном порядке)
     const isDuplicate = selectedDict.words.some(
       word => word.original === outputText && word.translation === inputText
     );
     
     if (!isDuplicate) {
-      // Обновляем словари (меняем местами слова)
       const updatedDictionaries = dictionaries.map(dict => {
         if (dict.id === selectedDictionary) {
           return {

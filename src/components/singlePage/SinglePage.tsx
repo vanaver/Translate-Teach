@@ -54,12 +54,10 @@ function SinglePage() {
       const parsed = JSON.parse(savedDictionaries);
       setDictionaries(parsed);
       
-      // Находим словарь по имени из параметров
       const decodedName = decodeURIComponent(slovarik || '');
       const foundDict = parsed.find((d: Dictionary) => d.name === decodedName);
       setDictionary(foundDict || null);
     } else {
-      // Если в localStorage нет, устанавливаем начальный словарь
       const initialDict = {
         id: 1,
         name: 'Основной словарь',
@@ -81,7 +79,6 @@ function SinglePage() {
     }
   }, [slovarik]);
 
-  // Фильтрация слов при изменении поиска или словаря
   useEffect(() => {
     if (!dictionary) return;
     
@@ -96,23 +93,19 @@ function SinglePage() {
   const handleDeleteWord = (wordToDelete: WordPair) => {
     if (!dictionary) return;
     
-    // Создаем новый массив без удаленного слова
     const updatedWords = dictionary.words.filter(
       word => word.original !== wordToDelete.original || 
              word.translation !== wordToDelete.translation
     );
     
-    // Обновляем текущий словарь
     const updatedDictionary = { ...dictionary, words: updatedWords };
     setDictionary(updatedDictionary);
     
-    // Обновляем список всех словарей
     const updatedDictionaries = dictionaries.map(d => 
       d.id === dictionary.id ? updatedDictionary : d
     );
     setDictionaries(updatedDictionaries);
     
-    // Сохраняем в localStorage
     localStorage.setItem('dictionaries', JSON.stringify(updatedDictionaries));
   };
 
@@ -142,18 +135,15 @@ const handleStartPractice = () => {
 const handleRemember = (remembered: boolean) => {
   const currentWord = mixWords[currentWordIndex];
   
-  // Обновляем состояния сразу
   if (remembered) {
     setRememberedWords(prev => [...prev, currentWord]);
   } else {
     setNotRememberedWords(prev => [...prev, currentWord]);
   }
   
-  // Проверяем, последнее ли это слово
   const isLastWord = currentWordIndex >= mixWords.length - 1;
   
   if (isLastWord) {
-    // Для последнего слова сразу показываем результаты
     const totalWords = mixWords.length;
     const rememberedCount = remembered ? rememberedWords.length + 1 : rememberedWords.length;
     const percentage = Math.round((rememberedCount / totalWords) * 100);
@@ -162,7 +152,6 @@ const handleRemember = (remembered: boolean) => {
     setIsPracticing(false);
     setShowResults(true);
   } else {
-    // Переходим к следующему слову
     setCurrentWordIndex(prev => prev + 1);
     setShowTranslation(false);
   }
